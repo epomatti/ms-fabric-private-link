@@ -22,8 +22,6 @@ https://app.fabric.microsoft.com/
 Set the Fabric tenant to use [Azure Private link][1].
 
 
-
-
 ## Azure infrastructure
 
 > [!NOTE]
