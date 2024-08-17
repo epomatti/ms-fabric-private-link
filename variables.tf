@@ -2,6 +2,9 @@ variable "location" {
   type = string
 }
 
+### Fabric ###
+
+
 ### Network ###
 variable "allowed_source_address_prefixes" {
   type = list(string)

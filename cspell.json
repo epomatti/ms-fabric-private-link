@@ -4,7 +4,11 @@
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
-        "azureuser"
+        "azureuser",
+        "ipinfo",
+        "Lakehouse",
+        "onelake",
+        "privatelink"
     ],
     "ignoreWords": [],
     "import": []
