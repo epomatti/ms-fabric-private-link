@@ -5,3 +5,7 @@ output "vnet_id" {
 output "private_endpoints_subnet_id" {
   value = azurerm_subnet.private_endpoints.id
 }
+
+output "compute_subnet_id" {
+  value = azurerm_subnet.compute.id
+}

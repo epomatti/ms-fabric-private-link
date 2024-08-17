@@ -26,11 +26,39 @@ Set the Fabric tenant to use [Azure Private link][1].
 
 ## Azure infrastructure
 
-Create the teste infrastructure on Azure:
+Generate the `.auto.tfvars` from the template:
+
+```sh
+cp config/template.tfvars
+```
+
+Create a temporary key for the Virtual Machine:
+
+```sh
+mkdir keys && ssh-keygen -f keys/temp_rsa
+```
+
+Deploy the resources:
 
 ```sh
 terraform init
 terraform apply -auto-approve
+```
+
+## Post-deployment
+
+```sh
+ssh -i keys/temp_rsa.pub azureuser@<public-ip>
+```
+
+```sh
+cloud-init
+```
+
+Test docker:
+
+```sh
+sudo docker run hello-world
 ```
 
 ## Connect
