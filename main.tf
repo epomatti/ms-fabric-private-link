@@ -27,6 +27,15 @@ module "vnet" {
   location            = azurerm_resource_group.default.location
 }
 
+module "nsg" {
+  source                          = "./modules/nsg"
+  workload                        = local.workload
+  resource_group_name             = azurerm_resource_group.default.name
+  location                        = azurerm_resource_group.default.location
+  compute_subnet_id               = module.vnet.compute_subnet_id
+  allowed_source_address_prefixes = var.allowed_source_address_prefixes
+}
+
 module "pls_fabric" {
   source            = "./modules/privatelink/services/fabric"
   location          = azurerm_resource_group.default.location

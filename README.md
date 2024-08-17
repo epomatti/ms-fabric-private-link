@@ -26,10 +26,20 @@ Set the Fabric tenant to use [Azure Private link][1].
 
 ## Azure infrastructure
 
+> [!NOTE]
+> This project is built for the **ARM** platform.
+
 Generate the `.auto.tfvars` from the template:
 
 ```sh
 cp config/template.tfvars
+```
+
+Get your public IP address and set it to the `allowed_source_address_prefixes` variable in CIDR format:
+
+```sh
+# Example: allowed_source_address_prefixes = ["1.2.3.4/32"]
+curl ipinfo.io/ip
 ```
 
 Create a temporary key for the Virtual Machine:

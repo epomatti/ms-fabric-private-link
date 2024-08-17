@@ -2,6 +2,11 @@ variable "location" {
   type = string
 }
 
+### Network ###
+variable "allowed_source_address_prefixes" {
+  type = list(string)
+}
+
 ### Virtual Machine ###
 variable "vm_size" {
   type = string
