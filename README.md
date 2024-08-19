@@ -1,6 +1,6 @@
 # Microsoft Fabric - Private Link
 
-Fabric Lakehouse connectivity via Private Link using SQL endpoints.
+Running queries in Fabric Lakehouse using SQL endpoints via Private Link.
 
 <img src=".assets/fabric.png" />
 
@@ -8,11 +8,11 @@ Fabric Lakehouse connectivity via Private Link using SQL endpoints.
 
 ### Base project
 
-In order to complete this project, initiate a Fabric environment. For demonstration purposes, you can use [Lakehouse Tutorial][4].
+A Fabric environment is required for this project. For demonstration purposes, you can use [Lakehouse Tutorial][4].
 
 ### Licensing
 
-The following licenses are required:
+The following licenses are required for Fabric:
 
 - Power BI license
 - Microsoft Fabric
@@ -42,9 +42,6 @@ mkdir keys && ssh-keygen -f keys/temp_rsa
 ```
 
 Deploy the resources:
-
-> [!IMPORTANT]
-> Azure Private Link resources for Fabric must be created `after` the Fabric Capacity has been associated with the workspace. If not, port 1433 will not resolve. To fix it, simply delete and recreate the Private Link service and endpoints associated with Fabric.
 
 ```sh
 terraform init
@@ -104,6 +101,9 @@ It is also possible to do it via the [Azure Portal][3].
 After purchasing Fabric Capacity, **assign the capacity to the workspace**.
 
 ### Create the Private Link Service
+
+> [!IMPORTANT]
+> Azure Private Link resources for Fabric described in this section must be created **after the Fabric Capacity has been associated with the workspace**. If not, port 1433 will not resolve. To fix it, simply delete and recreate the Private Link service and endpoints associated with Fabric.
 
 After Private Link is enabled in the tenant, and the Fabric capacity is assigned to the workspace, create the Private Link resources in Azure.
 
