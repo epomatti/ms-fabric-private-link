@@ -123,16 +123,11 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Str0ngP4ssword#2023" --name 
 
 Set the environment variable
 
-Get the dependencies:
-
-```sh
-go get
-```
-
 Start the application:
 
 ```sh
-./mvnw spring-boot:run
+# ./mvnw spring-boot:run -Dspring.profiles.active=local
+./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
 (cd ./app; bash ./acrBuildPush.sh)

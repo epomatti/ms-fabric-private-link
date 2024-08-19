@@ -8,8 +8,10 @@
         "github",
         "godotenv",
         "ipinfo",
+        "jdbc",
         "joho",
         "Lakehouse",
+        "litware",
         "mvnw",
         "onelake",
         "privatelink"
