@@ -6,17 +6,12 @@ Running queries in Fabric Lakehouse using SQL endpoints via Private Link.
 
 ## 1 - Fabric environment
 
+> [!TIP]
+> The following licenses are required: **Power BI license**, **Microsoft Fabric**, **Microsoft 365**
+
 ### Base project
 
 A Fabric environment is required for this project. For demonstration purposes, you can use [Lakehouse Tutorial][4].
-
-### Licensing
-
-The following licenses are required for Fabric:
-
-- Power BI license
-- Microsoft Fabric
-- Microsoft 365
 
 ## 2 - Create the Azure infrastructure
 
