@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ### Builder ###
-FROM eclipse-temurin:21-jdk-jammy as builder
+FROM eclipse-temurin:21-jdk-jammy AS builder
 WORKDIR /opt/app
 COPY . .
 RUN ./mvnw dependency:go-offline -Dhttps.protocols=TLSv1.2
