@@ -11,7 +11,7 @@ variable "allowed_source_address_prefixes" {
   type = list(string)
 }
 
-### Fabric ###
+### Fabric Capacity ###
 variable "create_fabric_capacity" {
   type = bool
 }
@@ -24,6 +24,7 @@ variable "fabric_capacity_sku_name" {
   type = string
 }
 
+### Fabric Private Link ###
 variable "create_fabric_private_link" {
   type = bool
 }

@@ -47,6 +47,9 @@ Run the verifications in the next section.
 
 ### Verification
 
+> [!TIP]
+> The cloud init script will `reboot` the machine after completion.
+
 Start an SSH session in the VM:
 
 ```sh
@@ -62,7 +65,7 @@ cloud-init status --wait
 Check for the required packages installation:
 
 ```sh
-az version
+sudo az version
 sudo docker run hello-world
 ```
 
@@ -70,13 +73,17 @@ sudo docker run hello-world
 
 ### Enable Private Link in Fabric
 
-Set the Fabric tenant to use [Azure Private link][1]. The SQL endpoint will have the same public name via Private Link, only resolving to a private IP:
-
-Example:
+In the Fabric Admin portal, set the Fabric tenant to use [Azure Private link][1]. The SQL endpoint will have the same public name via Private Link, only resolving to a private IP within Azure later. Example:
 
 ```
 <object-id>.datawarehouse.fabric.microsoft.com
 ```
+
+### Enable Service Principals
+
+Also in the Admin portal, [enable service principals][5].
+
+### 
 
 ### Fabric Capacity
 
@@ -250,3 +257,4 @@ https://learn.microsoft.com/en-us/fabric/data-warehouse/entra-id-authentication
 [2]: https://learn.microsoft.com/en-us/fabric/security/security-private-links-use
 [3]: https://portal.azure.com/#create/Microsoft.Fabric
 [4]: https://learn.microsoft.com/en-us/fabric/data-engineering/tutorial-lakehouse-introduction
+[5]: https://learn.microsoft.com/en-us/fabric/data-warehouse/entra-id-authentication

@@ -102,6 +102,11 @@ resource "azurerm_role_assignment" "acr_vm_role_assignment" {
   principal_id         = module.vm.managed_identity_principal_id
 }
 
+module "entra" {
+  source   = "./modules/entra"
+  workload = local.workload
+}
+
 module "fabric_capacity" {
   source                   = "./modules/fabric"
   count                    = var.create_fabric_capacity ? 1 : 0
