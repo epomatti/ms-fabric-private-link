@@ -17,14 +17,14 @@ resource "azurerm_resource_group" "default" {
 }
 
 module "vnet" {
-  source              = "./modules/vnet"
+  source              = "./modules/network/vnet"
   workload            = var.workload
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
 }
 
 module "nsg" {
-  source                          = "./modules/nsg"
+  source                          = "./modules/network/nsg"
   workload                        = var.workload
   resource_group_name             = azurerm_resource_group.default.name
   location                        = azurerm_resource_group.default.location
