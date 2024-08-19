@@ -83,6 +83,13 @@ module "vm" {
   image_version   = var.vm_image_version
 }
 
+resource "azurerm_role_assignment" "acr_vm_role_assignment" {
+  # Allows the Virtual Machine to pull images from the Azure Container Registry
+  scope                = module.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = module.vm.managed_identity_principal_id
+}
+
 module "fabric_capacity" {
   source                   = "./modules/fabric"
   count                    = var.create_fabric_capacity ? 1 : 0

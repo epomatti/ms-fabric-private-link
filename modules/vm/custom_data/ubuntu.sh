@@ -6,6 +6,9 @@ export DEBIAN_FRONTEND=noninteractive
 apt update
 apt upgrade -y
 
+# Install Azure CLI, used to pull the image from ACR
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
 # Add Docker's official GPG key:
 apt-get update
 apt-get install -y ca-certificates

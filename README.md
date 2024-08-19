@@ -100,6 +100,28 @@ dig +short onelake.dfs.fabric.microsoft.com
 dig +short <tenant-object-id-without-hyphens>-api.privatelink.analysis.windows.net
 ```
 
+###  ACR build & push
+
+Build and push the image to Azure.
+
+In your local environment, set the ACR name:
+
+```sh
+export CONTAINER_REGISTRY="<acr name>"
+```
+
+Build and push the image to the Container Registry repository:
+
+```sh
+(cd ./app; bash ./acrBuildPush.sh)
+```
+
+### Running in Azure
+
+
+
+
+
 ## Connect
 
 https://learn.microsoft.com/en-us/fabric/security/security-managed-private-endpoints-create
@@ -129,11 +151,10 @@ Replace the
 Start the application:
 
 ```sh
-# ./mvnw spring-boot:run -Dspring.profiles.active=local
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
-(cd ./app; bash ./acrBuildPush.sh)
+
 
 
 https://learn.microsoft.com/en-us/fabric/get-started/fabric-trial
