@@ -1,10 +1,14 @@
-# azure-fabric-demo
+# Microsoft Fabric - Private Link
 
-## Fabric
+Fabric Lakehouse connectivity via Private Link using SQL endpoints.
+
+<img src=".assets/fabric.png" />
+
+## 1 - Fabric environment
 
 ### Base project
 
-In order to complete this project, initiate a Fabric environment, such as in the [Lakehouse Tutorial][4].
+In order to complete this project, initiate a Fabric environment. For demonstration purposes, you can use [Lakehouse Tutorial][4].
 
 ### Licensing
 
@@ -14,37 +18,17 @@ The following licenses are required:
 - Microsoft Fabric
 - Microsoft 365
 
-Fabric is available at https://app.fabric.microsoft.com/.
-
-### Private Link
-
-#### Configuration
-
-Set the Fabric tenant to use [Azure Private link][1].
-
-The SQL endpoint will have the same public name via Private Link, only resolving to a private IP:
-
-```
-<object-id>.datawarehouse.fabric.microsoft.com
-```
-
-#### Fabric Capacity
-
-In order to use Private Link, purchasing paid Fabric Capacity [is required][1].
-
-After provisioning Fabric Capacity in the [Azure Portal][3], assign the capacity to the workspace.
-
-## Azure infrastructure
+## 2 - Create the Azure infrastructure
 
 ### Setup
 
-Generate the `.auto.tfvars` from the template:
+Generate the `.auto.tfvars` from the [template](config/template.tfvars):
 
 ```sh
 cp config/template.tfvars
 ```
 
-Get your public IP address and set it to the `allowed_source_address_prefixes` variable in CIDR format:
+Set your public IP address in the `allowed_source_address_prefixes` variable using CIDR notation:
 
 ```sh
 # allowed_source_address_prefixes = ["1.2.3.4/32"]
@@ -67,18 +51,9 @@ terraform init
 terraform apply -auto-approve
 ```
 
-### Fabric Capacity
+Run the verifications in the next section.
 
-> [!WARNING]
-> Fabric Capacity can incur high costs.
-
-To create the Fabric Capacity, enable it in the configuration:
-
-```terraform
-create_fabric_capacity = true
-```
-
-### Post-deployment verification
+### Verification
 
 Start an SSH session in the VM:
 
@@ -99,7 +74,54 @@ az version
 sudo docker run hello-world
 ```
 
-Confirm that the Fabric endpoints are resolving to private IPs:
+## 3 - Set up Fabric Private Link
+
+### Enable Private Link in Fabric
+
+Set the Fabric tenant to use [Azure Private link][1]. The SQL endpoint will have the same public name via Private Link, only resolving to a private IP:
+
+Example:
+
+```
+<object-id>.datawarehouse.fabric.microsoft.com
+```
+
+### Fabric Capacity
+
+> [!WARNING]
+> Fabric Capacity can incur high costs.
+
+In order to use Private Link, purchasing paid Fabric Capacity [is required][1].
+
+To create the Fabric Capacity via Terraform, enable it in the configuration:
+
+```terraform
+create_fabric_capacity = true
+```
+
+It is also possible to do it via the [Azure Portal][3].
+
+After purchasing Fabric Capacity, **assign the capacity to the workspace**.
+
+### Create the Private Link Service
+
+After Private Link is enabled in the tenant, and the Fabric capacity is assigned to the workspace, create the Private Link resources in Azure.
+
+Enable the flag:
+
+```terraform
+create_fabric_private_link = true
+```
+
+Apply the configuration:
+
+```sh
+terraform apply
+```
+
+### Private Link verification
+
+From the Virtual Machine in Azure, confirm that the Fabric endpoints are resolving to private IPs:
 
 > [!NOTE]
 > Make sure that the Fabric endpoints are resolving to private CIDRs (E.g.: 10.x.x.x)
@@ -110,9 +132,11 @@ dig +short onelake.dfs.fabric.microsoft.com
 dig +short <tenant-object-id-without-hyphens>-api.privatelink.analysis.windows.net
 ```
 
+## 4 - Application configuration
+
 ###  ACR build & push
 
-Build and push the image to Azure.
+Build and push the application image to Azure.
 
 In your local environment, set the ACR name:
 
@@ -208,14 +232,6 @@ Start the local database:
 ```sh
 docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Str0ngP4ssword#2023" --name mssql-dev -p 1433:1433 -d mcr.microsoft.com/mssql/server
 ```
-
-Set the environment variable
-
-```properties
-litware.connectionUrl=jdbc:sqlserver://SQLENDPOINT.datawarehouse.fabric.microsoft.com:1433;database=DATABASE;authentication=ActiveDirectoryServicePrincipal;aadSecurePrincipalId=****;aadSecurePrincipalSecret==****;;encrypt=true;trustServerCertificate=false;
-```
-
-Replace the 
 
 Start the application:
 

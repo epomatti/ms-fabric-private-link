@@ -1,5 +1,5 @@
 # General
-workload                        = "litware"
+project_name                    = "litware"
 location                        = "eastus2"
 allowed_source_address_prefixes = ["1.2.3.4/32"] # Replace with your IP address
 

@@ -1,5 +1,5 @@
 # General
-variable "workload" {
+variable "project_name" {
   type = string
 }
 
@@ -22,6 +22,10 @@ variable "fabric_capacity_location" {
 
 variable "fabric_capacity_sku_name" {
   type = string
+}
+
+variable "create_fabric_private_link" {
+  type = bool
 }
 
 ### Container Registry ###
