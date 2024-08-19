@@ -1,13 +1,27 @@
+# General
+variable "workload" {
+  type = string
+}
+
 variable "location" {
   type = string
 }
 
-### Fabric ###
-
-
-### Network ###
 variable "allowed_source_address_prefixes" {
   type = list(string)
+}
+
+### Fabric ###
+variable "create_fabric_capacity" {
+  type = bool
+}
+
+variable "fabric_capacity_location" {
+  type = string
+}
+
+variable "fabric_capacity_sku_name" {
+  type = string
 }
 
 ### Virtual Machine ###

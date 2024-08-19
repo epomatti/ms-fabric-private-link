@@ -24,13 +24,3 @@ resource "azapi_resource" "powerbi" {
     }
   })
 }
-
-# data "azapi_resource" "powerbi_reponse" {
-#   type      = "Microsoft.PowerBI/privateLinkServicesForPowerBI@2020-06-01"
-#   name      = azurerm_web_pubsub.powerbi.name
-#   parent_id = azurerm_resource_group.azapi_labs.id
-
-#   depends_on = [
-#     azapi_update_resource.webpubsub_identity
-#   ]
-# }

@@ -61,6 +61,17 @@ terraform init
 terraform apply -auto-approve
 ```
 
+### Fabric Capacity
+
+> [!WARNING]
+> Fabric Capacity can incur high costs.
+
+To create the Fabric Capacity, enable it in the configuration:
+
+```terraform
+create_fabric_capacity = true
+```
+
 ### Post-deployment verification
 
 Start an SSH session in the VM:
@@ -102,8 +113,29 @@ SQL analytics endpoint
 m26bvs4vdluubiodgfvs7sj4bu-m6d5xj5dylcunhnik6jsdwtxte.datawarehouse.fabric.microsoft.com
 
 
-##
+## Local development
 
+Start the local database:
+
+```sh
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Str0ngP4ssword#2023" --name mssql-dev -p 1433:1433 -d mcr.microsoft.com/mssql/server
+```
+
+Set the environment variable
+
+Get the dependencies:
+
+```sh
+go get
+```
+
+Start the application:
+
+```sh
+./mvnw spring-boot:run
+```
+
+(cd ./app; bash ./acrBuildPush.sh)
 
 
 https://learn.microsoft.com/en-us/fabric/get-started/fabric-trial

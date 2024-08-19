@@ -11,25 +11,21 @@ terraform {
   }
 }
 
-locals {
-  workload = "litware"
-}
-
 resource "azurerm_resource_group" "default" {
-  name     = "rg-${local.workload}"
+  name     = "rg-${var.workload}"
   location = var.location
 }
 
 module "vnet" {
   source              = "./modules/vnet"
-  workload            = local.workload
+  workload            = var.workload
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
 }
 
 module "nsg" {
   source                          = "./modules/nsg"
-  workload                        = local.workload
+  workload                        = var.workload
   resource_group_name             = azurerm_resource_group.default.name
   location                        = azurerm_resource_group.default.location
   compute_subnet_id               = module.vnet.compute_subnet_id
@@ -53,7 +49,7 @@ module "ple_fabric" {
 
 module "vm" {
   source              = "./modules/vm"
-  workload            = local.workload
+  workload            = var.workload
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
 
@@ -66,4 +62,12 @@ module "vm" {
   image_offer     = var.vm_image_offer
   image_sku       = var.vm_image_sku
   image_version   = var.vm_image_version
+}
+
+module "fabric_capacity" {
+  source                   = "./modules/fabric"
+  count                    = var.create_fabric_capacity ? 1 : 0
+  workload                 = var.workload
+  fabric_capacity_location = var.fabric_capacity_location
+  sku_name                 = var.fabric_capacity_sku_name
 }
