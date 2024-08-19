@@ -8,10 +8,12 @@ resource "azurerm_container_registry" "acr" {
   network_rule_set {
     default_action = "Deny"
 
-    ip_rule {
-      action   = "Allow"
-      ip_range = var.allowed_cidr
-    }
+    ip_rule = [
+      for ip in var.allowed_source_address_prefixes : {
+        action   = "Allow"
+        ip_range = ip
+      }
+    ]
   }
 
   network_rule_bypass_option = "AzureServices"

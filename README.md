@@ -59,6 +59,9 @@ mkdir keys && ssh-keygen -f keys/temp_rsa
 
 Deploy the resources:
 
+> [!IMPORTANT]
+> Azure Private Link resources for Fabric must be created `after` the Fabric Capacity has been associated with the workspace. If not, port 1433 will not resolve. To fix it, simply delete and recreate the Private Link service and endpoints associated with Fabric.
+
 ```sh
 terraform init
 terraform apply -auto-approve
