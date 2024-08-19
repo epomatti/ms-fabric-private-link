@@ -22,6 +22,12 @@ Fabric is available at https://app.fabric.microsoft.com/.
 
 Set the Fabric tenant to use [Azure Private link][1].
 
+The SQL endpoint will have the same public name via Private Link, only resolving to a private IP:
+
+```
+<object-id>.datawarehouse.fabric.microsoft.com
+```
+
 #### Fabric Capacity
 
 In order to use Private Link, purchasing paid Fabric Capacity [is required][1].
@@ -83,16 +89,17 @@ Check if the initialization script finished successfully:
 cloud-init status --wait
 ```
 
-Test the docker runtime:
+Check for the required packages installation:
 
 ```sh
+az version
 sudo docker run hello-world
 ```
 
 Confirm that the Fabric endpoints are resolving to private IPs:
 
 > [!NOTE]
-> Make sure that the Fabric endpoints are resolving to private CIDRs
+> Make sure that the Fabric endpoints are resolving to private CIDRs (E.g.: 10.x.x.x)
 
 ```sh
 dig +short app.fabric.microsoft.com
@@ -118,9 +125,68 @@ Build and push the image to the Container Registry repository:
 
 ### Running in Azure
 
+Login using the VM system-assigned managed identity:
 
+> ![TIP]
+> You must login with `sudo` to allow the ACR login.
 
+```sh
+sudo az login --identity
+```
 
+Set the registry name as a variable:
+
+```sh
+registry="<acrname>"
+```
+
+Login to the registry:
+
+```sh
+az acr login --name $registry
+```
+
+Pull the image from the ACR repository:
+
+```sh
+sudo docker pull $registry.azurecr.io/fabricapp:latest
+```
+
+Create an environments file `fabric.env` file and set the appropriate values in the placeholders:
+
+- SQL Endpoint name
+- `database`
+- `aadSecurePrincipalId`
+- `aadSecurePrincipalSecret`
+
+Contents of the `fabric.env` file:
+
+```bash
+FABRIC_JDBC_CONNECTION_URL="jdbc:sqlserver://<SQLENDPOINT>.datawarehouse.fabric.microsoft.com:1433;database=<DATABASE>;authentication=ActiveDirectoryServicePrincipal;aadSecurePrincipalId=****;aadSecurePrincipalSecret==****;encrypt=true;trustServerCertificate=false;"
+```
+
+Create the `compose.yml`. Replace the `<registry>` placeholder with the container registry name:
+
+```yaml
+services:
+  fabric-app:
+    image: <registry>.azurecr.io/fabricapp:latest
+    env_file: "fabric.env"
+    ports:
+      - "8080:8080"
+```
+
+Run the application:
+
+```sh
+sudo docker compose up
+```
+
+Call the endpoint:
+
+```sh
+curl http://<vmip>:8080/api/fabric/select1
+```
 
 ## Connect
 
