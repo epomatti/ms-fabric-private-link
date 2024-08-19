@@ -83,12 +83,18 @@ In the Fabric Admin portal, set the Fabric tenant to use [Azure Private link][1]
 
 Also in the Admin portal, [enable service principals][5].
 
-### 
+### Service principal permissions
+
+An App Registration named `litwware123-fabricapp` would have been created by Terraform.
+
+In the Lakehouse permissions management, assign `Read` access to SQL endpoints.
 
 ### Fabric Capacity
 
 > [!WARNING]
 > Fabric Capacity can incur high costs.
+
+#### Create the capacity
 
 In order to use Private Link, purchasing paid Fabric Capacity [is required][1].
 
@@ -98,7 +104,9 @@ To create the Fabric Capacity via Terraform, enable it in the configuration:
 create_fabric_capacity = true
 ```
 
-It is also possible to do it via the [Azure Portal][3].
+Alternatively, it's possible to do it via the [Azure Portal][3].
+
+#### Assign the capacity
 
 After purchasing Fabric Capacity, **assign the capacity to the workspace**.
 
@@ -134,11 +142,11 @@ dig +short onelake.dfs.fabric.microsoft.com
 dig +short <tenant-object-id-without-hyphens>-api.privatelink.analysis.windows.net
 ```
 
-## 4 - Application configuration
+## 4 - Execute the Fabric client application
 
-###  ACR build & push
+###  Build the application
 
-Build and push the application image to Azure.
+Build and push the application image to Azure Container Registry.
 
 In your local environment, set the ACR name:
 
@@ -154,16 +162,16 @@ Build and push the image to the Container Registry repository:
 
 ### Running in Azure
 
-Login using the VM system-assigned managed identity:
+While connected with SSH in the Azure VM, login with the CLI using the VM system-assigned managed identity:
 
-> ![TIP]
-> You must login with `sudo` to allow the ACR login.
+> ![IMPORTANT]
+> You must login with `sudo` to allow the ACR login later.
 
 ```sh
 sudo az login --identity
 ```
 
-Set the registry name as a variable:
+Set the registry name as a session variable:
 
 ```sh
 registry="<acrname>"
@@ -172,7 +180,7 @@ registry="<acrname>"
 Login to the registry:
 
 ```sh
-az acr login --name $registry
+sudo az acr login --name $registry
 ```
 
 Pull the image from the ACR repository:
@@ -181,20 +189,36 @@ Pull the image from the ACR repository:
 sudo docker pull $registry.azurecr.io/fabricapp:latest
 ```
 
-Create an environments file `fabric.env` file and set the appropriate values in the placeholders:
+Create the environments file:
 
-- SQL Endpoint name
-- `database`
-- `aadSecurePrincipalId`
-- `aadSecurePrincipalSecret`
+```sh
+touch fabric.env
+nano fabric.env
+```
 
-Contents of the `fabric.env` file:
+Set the JDBC connection URL environment variable:
 
-```bash
+```sh
 FABRIC_JDBC_CONNECTION_URL="jdbc:sqlserver://<SQLENDPOINT>.datawarehouse.fabric.microsoft.com:1433;database=<DATABASE>;authentication=ActiveDirectoryServicePrincipal;aadSecurePrincipalId=****;aadSecurePrincipalSecret==****;encrypt=true;trustServerCertificate=false;"
 ```
 
-Create the `compose.yml`. Replace the `<registry>` placeholder with the container registry name:
+Replace the appropriate placeholder values in the connection string:
+
+| Variable | Notes |
+|-|-|
+| SQL endpoint name | Get this name from the Lakehouse SQL analytical endpoint. |
+| `database` | This is the Lakehouse database name. |
+| `aadSecurePrincipalId` | The App Registration application ID created by Terraform. |
+| `aadSecurePrincipalSecret` | Manually create this secret and replace in the connection string. |
+
+Create the compose file:
+
+```sh
+touch compose.yml
+nano compose.yml
+```
+
+Past the content below. Replace the `<registry>` placeholder with the container registry name:
 
 ```yaml
 services:
@@ -205,7 +229,7 @@ services:
       - "8080:8080"
 ```
 
-Run the application:
+Start the application:
 
 ```sh
 sudo docker compose up
@@ -216,16 +240,6 @@ Call the endpoint:
 ```sh
 curl http://<vmip>:8080/api/fabric/select1
 ```
-
-## Connect
-
-https://learn.microsoft.com/en-us/fabric/security/security-managed-private-endpoints-create
-
-
-SQL analytics endpoint
-
-m26bvs4vdluubiodgfvs7sj4bu-m6d5xj5dylcunhnik6jsdwtxte.datawarehouse.fabric.microsoft.com
-
 
 ## Local development
 
@@ -240,18 +254,6 @@ Start the application:
 ```sh
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 ```
-
-
-
-
-https://learn.microsoft.com/en-us/fabric/get-started/fabric-trial
-https://learn.microsoft.com/en-us/fabric/get-started/fabric-trial#other-ways-to-start-a-microsoft-fabric-trial
-
-
-https://learn.microsoft.com/en-us/fabric/security/security-managed-vnets-fabric-overview
-https://learn.microsoft.com/en-us/fabric/data-warehouse/entra-id-authentication
-https://learn.microsoft.com/en-us/fabric/data-warehouse/entra-id-authentication
-
 
 [1]: https://learn.microsoft.com/en-us/fabric/security/security-private-links-overview#other-considerations-and-limitations
 [2]: https://learn.microsoft.com/en-us/fabric/security/security-private-links-use
