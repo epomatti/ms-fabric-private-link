@@ -164,7 +164,7 @@ Build and push the image to the Container Registry repository:
 
 While connected with SSH in the Azure VM, login with the CLI using the VM system-assigned managed identity:
 
-> ![IMPORTANT]
+> [!IMPORTANT]
 > You must login with `sudo` to allow the ACR login later.
 
 ```sh
