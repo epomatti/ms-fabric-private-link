@@ -47,6 +47,25 @@ module "ple_fabric" {
   fabric_pls_id       = module.pls_fabric.id
 }
 
+module "acr" {
+  source              = "./modules/acr"
+  workload            = var.workload
+  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.default.location
+  sku                 = var.acr_sku
+  admin_enabled       = var.acr_admin_enabled
+  allowed_cidr        = var.allowed_source_address_prefixes[0]
+}
+
+module "ple_acr" {
+  source              = "./modules/privatelink/endpoints/acr"
+  location            = azurerm_resource_group.default.location
+  resource_group_name = azurerm_resource_group.default.name
+  vnet_id             = module.vnet.vnet_id
+  subnet_id           = module.vnet.private_endpoints_subnet_id
+  acr_id              = module.acr.id
+}
+
 module "vm" {
   source              = "./modules/vm"
   workload            = var.workload

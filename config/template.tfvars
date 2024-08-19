@@ -16,3 +16,7 @@ vm_image_publisher = "Canonical"
 vm_image_offer     = "ubuntu-24_04-lts"
 vm_image_sku       = "server"
 vm_image_version   = "latest"
+
+# Container Registry
+acr_sku           = "Premium"
+acr_admin_enabled = true

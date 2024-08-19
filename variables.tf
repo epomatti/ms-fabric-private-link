@@ -24,6 +24,15 @@ variable "fabric_capacity_sku_name" {
   type = string
 }
 
+### Container Registry ###
+variable "acr_sku" {
+  type = string
+}
+
+variable "acr_admin_enabled" {
+  type = bool
+}
+
 ### Virtual Machine ###
 variable "vm_size" {
   type = string
