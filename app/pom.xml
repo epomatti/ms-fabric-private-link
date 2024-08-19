@@ -37,6 +37,12 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<version>12.8.0.jre11</version>
 		</dependency>
+		<!-- Required for Microsoft Entra authentication -->
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>msal4j</artifactId>
+			<version>1.16.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

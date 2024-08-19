@@ -123,6 +123,12 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Str0ngP4ssword#2023" --name 
 
 Set the environment variable
 
+```properties
+litware.connectionUrl=jdbc:sqlserver://SQLENDPOINT.datawarehouse.fabric.microsoft.com:1433;database=DATABASE;authentication=ActiveDirectoryServicePrincipal;aadSecurePrincipalId=****;aadSecurePrincipalSecret==****;;encrypt=true;trustServerCertificate=false;
+```
+
+Replace the 
+
 Start the application:
 
 ```sh
