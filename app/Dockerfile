@@ -14,4 +14,4 @@ COPY --from=builder /opt/app/target/*.jar /opt/app/*.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "*.jar"]
+ENTRYPOINT ["java", "-jar", "*.jar", "--spring.profiles.active=fabric"]

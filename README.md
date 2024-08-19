@@ -32,9 +32,6 @@ After provisioning Fabric Capacity in the [Azure Portal][3], assign the capacity
 
 ### Setup
 
-> [!NOTE]
-> This project is built for the **ARM** platform.
-
 Generate the `.auto.tfvars` from the template:
 
 ```sh
