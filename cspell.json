@@ -4,7 +4,9 @@
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
+        "azapi",
         "azureuser",
+        "brazilsouth",
         "github",
         "godotenv",
         "ipinfo",
@@ -14,7 +16,8 @@
         "litware",
         "mvnw",
         "onelake",
-        "privatelink"
+        "privatelink",
+        "vnet"
     ],
     "ignoreWords": [],
     "import": []

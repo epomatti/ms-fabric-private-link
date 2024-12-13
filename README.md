@@ -20,14 +20,14 @@ A Fabric environment is required for this project. For demonstration purposes, y
 Generate the `.auto.tfvars` from the [template](config/template.tfvars):
 
 ```sh
-cp config/template.tfvars
+cp config/template.tfvars .auto.tfvars
 ```
 
-Set your public IP address in the `allowed_source_address_prefixes` variable using CIDR notation:
+Set the required variables:
 
-```sh
-# allowed_source_address_prefixes = ["1.2.3.4/32"]
-curl ipinfo.io/ip
+```terraform
+subscription_id                 = "00000000-0000-0000-0000-000000000000"
+allowed_source_address_prefixes = ["1.2.3.4/32"]
 ```
 
 Create a temporary key for the Virtual Machine:

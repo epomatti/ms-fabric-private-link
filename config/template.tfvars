@@ -1,15 +1,16 @@
 # General
+subscription_id                 = "00000000-0000-0000-0000-000000000000" # Replace with the subscription ID
 project_name                    = "litware"
 location                        = "eastus2"
 allowed_source_address_prefixes = ["1.2.3.4/32"] # Replace with your IP address
 
-# Fabric capcity
-create_fabric_capacity   = false # Set to true to create a Fabric capacity
+# Fabric capacity
+create_fabric_capacity   = false
 fabric_capacity_location = "brazilsouth"
 fabric_capacity_sku_name = "F2"
 
 # Fabric Private Link
-create_fabric_private_link = false # Set to true to create the Private Link resources for Fabric
+create_fabric_private_link = false
 
 # Application VM
 vm_size            = "Standard_B2als_v2"
