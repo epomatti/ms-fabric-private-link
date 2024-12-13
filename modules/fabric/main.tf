@@ -30,7 +30,7 @@ resource "azapi_resource" "fabric_capacity" {
   # Disabling schema validation for this resource
   schema_validation_enabled = false
 
-  body = jsonencode({
+  body = {
     sku = {
       name = "${var.sku_name}"
       tier = "Fabric"
@@ -40,5 +40,5 @@ resource "azapi_resource" "fabric_capacity" {
         members = ["${local.current_user_upn}"]
       }
     }
-  })
+  }
 }

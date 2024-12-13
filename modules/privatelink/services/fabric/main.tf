@@ -18,9 +18,9 @@ resource "azapi_resource" "powerbi" {
   location  = "global"
   parent_id = var.resource_group_id
 
-  body = jsonencode({
+  body = {
     properties = {
       tenantId = "${local.tenant_id}"
     }
-  })
+  }
 }
